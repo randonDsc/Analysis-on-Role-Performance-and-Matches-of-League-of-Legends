@@ -60,6 +60,14 @@ In the dataset, each 'gameid' corresponds to up to 12 rows – one for each of t
                             'monsterkills', 'cspm']
 Below is the first five rows of the resulting dataframe:
 
+| gameid                | datacompleteness   | league   | side   | position   |   gamelength | playerid                                  | result   |   kills |   deaths |   assists |   damagetochampions |     dpm |   damageshare |   damagetakenperminute |   damagemitigatedperminute |   totalgold |   earnedgold |   earned gpm |   earnedgoldshare |   minionkills |   monsterkills |   cspm |   edit_length |
+|:----------------------|:-------------------|:---------|:-------|:-----------|-------------:|:------------------------------------------|:---------|--------:|---------:|----------:|--------------------:|--------:|--------------:|-----------------------:|---------------------------:|------------:|-------------:|-------------:|------------------:|--------------:|---------------:|-------:|--------------:|
+| ESPORTSTMNT01_2690210 | complete           | LCKC     | Blue   | top        |         1713 | oe:player:38e0af7278d6769d0c81d7c4b47ac1e | False    |       2 |        3 |         2 |               15768 | 552.294 |     0.278784  |               1072.4   |                    777.793 |       10934 |         7164 |      250.928 |          0.253859 |           220 |             11 | 8.0911 |           114 |
+| ESPORTSTMNT01_2690210 | complete           | LCKC     | Blue   | jng        |         1713 | oe:player:637ed20b1e41be1c51bd1a4cb211357 | False    |       2 |        5 |         6 |               11765 | 412.084 |     0.208009  |                944.273 |                    650.158 |        9138 |         5368 |      188.021 |          0.19022  |            33 |            115 | 5.1839 |           114 |
+| ESPORTSTMNT01_2690210 | complete           | LCKC     | Blue   | mid        |         1713 | oe:player:d1ae0e2f9f3ac1e0e0cdcb86504ca77 | False    |       2 |        2 |         3 |               14258 | 499.405 |     0.252086  |                581.646 |                    227.776 |        9715 |         5945 |      208.231 |          0.210665 |           177 |             16 | 6.7601 |           114 |
+| ESPORTSTMNT01_2690210 | complete           | LCKC     | Blue   | bot        |         1713 | oe:player:998b3e49b01ecc41eacc392477a98cf | False    |       2 |        4 |         2 |               11106 | 389.002 |     0.196358  |                463.853 |                    218.879 |       10605 |         6835 |      239.405 |          0.242201 |           208 |             18 | 7.9159 |           114 |
+| ESPORTSTMNT01_2690210 | complete           | LCKC     | Blue   | sup        |         1713 | oe:player:e9741b3a238723ea6380ef2113fae63 | False    |       1 |        5 |         6 |                3663 | 128.301 |     0.0647631 |                475.026 |                    490.123 |        6678 |         2908 |      101.856 |          0.103054 |            42 |              0 | 1.4711 |           114 |
+
 
 After selecting the columns for the player dataframe, I found out `playerid`, `damagetochampions`, `dpm`, `damageshare`, `damagetakenperminute`, `damagemitigatedperminute`, and `minionkills` have missing values. damagetochampions has 10 missing values, and they are all from the same match, so does dpm. Therefore, I drop the rows of that match. Then I decide to do the conditional probabilistic imputation to the `damagemitigatedperminute`, so I put gamelength into groups by ground dividing them by 15. I then groupby the edit length, and found 51, 68, 213, 224 all have 10 missing values. Thus, I drop them and continue to conduct the imputation. After replacing the `result` column with Boolean values, I start to clean team dataframe.
 
@@ -73,7 +81,7 @@ Below is the head of team dataframe:
 I then remove the match I remove previously in the player dataframe, and found `damagemitigatedperminute` and `minionkills` have missing values, both missed 3776 values. Since these can be calculated from the player dataframe, I found these missing values by summing up the data in player dataframe and filled in the missing valies according to the team and gameid.
 
 
-### Exploratory Data Anslysis
+### Univariate Analysis
 
 
 
