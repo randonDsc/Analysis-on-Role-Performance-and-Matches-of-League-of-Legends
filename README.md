@@ -102,17 +102,224 @@ Here is the distribution of total gold, with the mean of 11383.029248601119:
   frameborder="0"
 ></iframe>
 
+It appears that the distribution of total gold have a trends of skewed to the right. This might suggest that few players tends to have advantage in economic in the games.
+
+Here is the distribution of damage to champions, with the mean of 13336.50582733813:
+
+<iframe
+  src="assets/damagechamp.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The distribution of damage to champions have even mroe severe skewness. This might illustrate that certain role is better at causing damages.
+
+
+Here is the distribution of kills, with the mean of 2.897857713828937 and also skewed to the right:
+<iframe
+  src="assets/kill.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+### Bivariate Analysis
+
+I conduct Bivariate Analysis on relationship between economic and number of kills. There seems to have a positive relationship between them, indicating that amount of gold might be one of the cause of games result. Here is the graph:
+
+<iframe
+  src="assets/gold_kill.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+### Interesting Aggregates
+One way to measure the performance of roles is see how well they utilize economy they earned. So I compute the (Kills + Assistance) / total gold, which measure how well they utilize gold they earned. I named this feature KA_gold_ratio. I create a pivot table showing the mean of KA_gold_ratio among different position and compare the value among winning team and losing team:
+
+'result' |   ('mean', 'bot') |   ('mean', 'jng') |   ('mean', 'mid') |   ('mean', 'sup') |   ('mean', 'top') |
+---------|------------------:|------------------:|------------------:|------------------:|------------------:|
+'losing' |       0.000462342 |       0.000629245 |       0.000493052 |       0.000871795 |       0.000414605 |
+'winning'|       0.00090964  |       0.00114483  |       0.000960187 |       0.00168347  |       0.000822086 |
+
+It appears that across all position, winning team tends to have higher KA_gold_ratio. I will conduct hypothesis testing on this topic later. This might shows that KA_gold_ratio is a good indicator of a role's performance.
 
 
 ## Assessment of Missingness
 
+### NMAR Analysis
+In our dataset, I believe that the column 'playerid' is NMAR. The number of plarerid missing is very different with number of rows that have 'partial' for data completeness. Thus, it is unlike for it to be MD. Furthermore, majority of other columns are related to the statistics during the gameplay, so it is also unlikely for it to depends on those columns. It is likey that the playerid is missing simply because the value itself is missing.
+
+### Missingness Dependency
+Here I doubt whether the missingness of 'damagemitigatedperminute' is depends on League column since different league might have differnt ways of recording the matches. Therefore, I conduct the permutation test using the tvd as statistic. 
+
+Null Hypothesis: Distribution of league when damagemitigatedperminute is missing is the same as the distribution of league when damagemitigatedperminute is not missing.
+
+Alternative Hypothesis: Distribution of league when damagemitigatedperminute is missing is NOT same as the distribution of league when damagemitigatedperminute is not missing.
+
+Here is the observed statistic:
+
+|   damagemitigatedperminute_missing = False |   damagemitigatedperminute_missing = True |
+|-------------------------------------------:|------------------------------------------:|
+|                               nan          |                                0.0390914  |
+|                                 0.022877   |                              nan          |
+|                                 0.0203352  |                              nan          |
+|                                 0.00715496 |                              nan          |
+|                                 0.00244775 |                              nan          |
+|                               nan          |                                0.0406762  |
+|                                 0.0196761  |                              nan          |
+|                                 0.0174167  |                              nan          |
+|                                 0.0127095  |                              nan          |
+|                                 0.0225946  |                              nan          |
+|                                 0.0251365  |                              nan          |
+|                                 0.0163811  |                              nan          |
+|                                 0.0191113  |                              nan          |
+|                                 0.0152514  |                              nan          |
+|                                 0.0144041  |                              nan          |
+|                                 0.00706082 |                              nan          |
+|                                 0.0213707  |                              nan          |
+|                                 0.0439654  |                              nan          |
+|                                 0.037187   |                              nan          |
+|                                 0.00150631 |                              nan          |
+|                                 0.0199586  |                              nan          |
+|                                 0.0288081  |                              nan          |
+|                                 0.0508379  |                              nan          |
+|                               nan          |                                0.497623   |
+|                                 0.022877   |                              nan          |
+|                                 0.0232536  |                              nan          |
+|                                 0.0226888  |                              nan          |
+|                                 0.0229712  |                              nan          |
+|                                 0.020241   |                              nan          |
+|                                 0.00357748 |                              nan          |
+|                                 0.017605   |                              nan          |
+|                                 0.0301262  |                              nan          |
+|                               nan          |                                0.415214   |
+|                                 0.0200527  |                              nan          |
+|                                 0.0230653  |                              nan          |
+|                                 0.00753154 |                              nan          |
+|                                 0.018264   |                              nan          |
+|                                 0.0361514  |                              nan          |
+|                                 0.0257014  |                              nan          |
+|                                 0.0530973  |                              nan          |
+|                                 0.0141216  |                              nan          |
+|                                 0.0350217  |                              nan          |
+|                                 0.0155338  |                              nan          |
+|                                 0.0192996  |                              nan          |
+|                                 0.0209942  |                              nan          |
+|                                 0.0229712  |                              nan          |
+|                                 0.0387874  |                              nan          |
+|                                 0.0305969  |                              nan          |
+|                                 0.0160045  |                              nan          |
+|                                 0.0132743  |                                0.00739567 |
+
+
+Here is the result of the permutation test:
+<iframe
+  src="assets/tvdmiss.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Since p value is 1.0, which is larger that the significance level, thesefore, we fail reject the null hypothesis and missingness of 'damagemitigatedperminute' is not depends league.
+
+Now I conduct another testing to test whether the missingness is dependent on length of the game, using the KS statistic:
+
+Null Hypothesis: Distribution of gamelength when damagemitigatedperminute is missing is the same as the distribution of gamelength when damagemitigatedperminute is not missing.
+
+Alternative Hypothesis: Distribution of gamelength when damagemitigatedperminute is missing is NOT same as the distribution of gamelength when damagemitigatedperminute is not missing.
+The result is the following:
+KstestResult(statistic=np.float64(0.06054070715893012), pvalue=np.float64(1.2377453593789456e-51), statistic_location=np.int64(1726), statistic_sign=np.int8(1))
+
+Since p value is 1.2377453593789456e-51, which is smaller that the significance level 0.05, thesefore, we reject the null hypothesis and missingness of 'damagemitigatedperminute' is MAR depends gamelength.
+
 ## Hypothesis Testing
+Here is the graph of difference in distribution of KA_gold_ratio among winning and losing players:
+
+<iframe
+  src="assets/hypo_ka.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+It appears that the mean of KA_gold_ratio of winning team is higher than the losing team. To confirm this, we conduct the permutation testing.
+null: (kill + assist / gold) of players in the winning team is the same with the losing team.
+
+### Testing 1
+alternative: (kill + assist / gold) of players in the winning team is higher than player in the losing team
+Result: the p value of the permutation testing is 0, thus, we reject the null hypothesis
+
+Now we know that is is not likely to cause by probability, so we continue to explore the quesiont "Which role “carries” (does the best) in their team more often?" using this features.
+
+Here we see the bar graph of KA_gold_ratio among different roles:
+
+<iframe
+  src="assets/mean_ka.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+It appears that support have higher KA_gold_ratio compares to other roles, so we coduct hypothesis testing:
+
+<iframe
+  src="assets/sup_ka.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+### hypothesis testing 2:
+
+null: The mean KA_gold_ratio in every role is the same.
+
+alternative: The mean KA_gold_ratio of support role is higher than other role
+
+Result: the p value of the permutation testing is 0, thus, we reject the null hypothesis
+
+hypothesis testing 3: 
+
+The testing above might impact our decision because the KA_gold_ratio jungle might be impact by other roles' KA_gold_ratio. So we conduct the third hypothesis testing
+
+null: The mean KA_gold_ratio of jungle and support is the same
+
+alternative: The mean KA_gold_ratio of support role is higher than jungle
+
+Here is a graph showing the comparison between jungle and support:
+
+<iframe
+  src="assets/hypo3.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Result: the p value of the permutation testing is 0, thus, we reject the null hypothesis
+
+
+### Conclusion:
+
+In the first permutation test, we shows that KA_gold_ratio of player in the winning team is likely to be higher than the losing team. By doing so, we shows that KA_gold_ratio is a ok statistic to measure the performance of roles. In the second permutation testing, we examing whether the KA_gold_ratio of support role is likely to be higher than the other roles, the result of the test is rejecting the null hypothesis. Thus, the answer to the topic question Which role “carries” (does the best) in their team more often? is support, which is in the Bot lanes most of times
+
 
 ## Framing a Prediction Problem
 
+In this part of the project, we are going to create a random forest model predicting which role a player played given their post game data. This is a classification problem. We will use accuracy to measure the performance of the model. Because we have multiple outcomes, we cannot use precision or recall to measure the model.
+
 ## Baseline Model
 
+For the baseline model, I use KA_gold_ratio and damagemitigatedperminute as my features. As illustrated above, KA_gold_ratio is a features that is good at measureing the performance of the roles and it is also not impacted by the length of the match. I choose damagemitigatedperminute as my another features because the top roles usually have higher defense, so I hope this features can help differentiate the role. I use n_estimators=30, max_depth=10 for my random forest 
+
+
+The accuracy of the training set is 0.48710031974420465
+The accuracy of the testing set is 0.461550759392486
+
+
 ## Final Model
+
+For the final model, I add the kills per minutes, minions kill per minutes, and assist per minutes to the set. However, my model might have some bug.
 
 ## Fairness Analysis
 
