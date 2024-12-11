@@ -229,7 +229,9 @@ Now I conduct another testing to test whether the missingness is dependent on le
 Null Hypothesis: Distribution of gamelength when damagemitigatedperminute is missing is the same as the distribution of gamelength when damagemitigatedperminute is not missing.
 
 Alternative Hypothesis: Distribution of gamelength when damagemitigatedperminute is missing is NOT same as the distribution of gamelength when damagemitigatedperminute is not missing.
+
 The result is the following:
+
 KstestResult(statistic=np.float64(0.06054070715893012), pvalue=np.float64(1.2377453593789456e-51), statistic_location=np.int64(1726), statistic_sign=np.int8(1))
 
 Since p value is 1.2377453593789456e-51, which is smaller that the significance level 0.05, thesefore, we reject the null hypothesis and missingness of 'damagemitigatedperminute' is MAR depends gamelength.
@@ -279,7 +281,7 @@ alternative: The mean KA_gold_ratio of support role is higher than other role
 
 Result: the p value of the permutation testing is 0, thus, we reject the null hypothesis
 
-hypothesis testing 3: 
+### hypothesis testing 3: 
 
 The testing above might impact our decision because the KA_gold_ratio jungle might be impact by other roles' KA_gold_ratio. So we conduct the third hypothesis testing
 
