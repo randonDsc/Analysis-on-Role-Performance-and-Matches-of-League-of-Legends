@@ -94,6 +94,7 @@ I then remove the match I remove previously in the player dataframe, and found `
 I performed the Univariate Analysis on total gold, damage to champions, and kills
 
 Here is the distribution of total gold, with the mean of 11383.029248601119:
+
 <iframe
   src="assets/total_gold.html"
   width="800"
