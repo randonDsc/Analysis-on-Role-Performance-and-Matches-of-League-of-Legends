@@ -53,6 +53,31 @@ Though there are 161 features in the dataset, we are only going to focus few of 
 
 ## Data Cleaning and Exploratory Data Analysis
 
+### Data Cleanning
+In the dataset, each 'gameid' corresponds to up to 12 rows – one for each of the 5 players on both teams and 2 containing summary data for the two teams. Therefore, I first separated the summary data and the rows of individual players. For the player df, I only keeps the following columss: ['gameid', 'datacompleteness', 'league', 'side', 'position', 'gamelength', 'playerid',
+                            'result', 'kills','deaths', 'assists', 'damagetochampions', 'dpm', 'damageshare', 'damagetakenperminute', 
+                            'damagemitigatedperminute', 'totalgold', 'earnedgold', 'earned gpm', 'earnedgoldshare', 'minionkills', 
+                            'monsterkills', 'cspm']
+Below is the first five rows of the resulting dataframe:
+
+
+After selecting the columns for the player dataframe, I found out `playerid`, `damagetochampions`, `dpm`, `damageshare`, `damagetakenperminute`, `damagemitigatedperminute`, and `minionkills` have missing values. damagetochampions has 10 missing values, and they are all from the same match, so does dpm. Therefore, I drop the rows of that match. Then I decide to do the conditional probabilistic imputation to the `damagemitigatedperminute`, so I put gamelength into groups by ground dividing them by 15. I then groupby the edit length, and found 51, 68, 213, 224 all have 10 missing values. Thus, I drop them and continue to conduct the imputation. After replacing the `result` column with Boolean values, I start to clean team dataframe.
+
+For team df, I kept the following columns: ['gameid', 'datacompleteness', 'league', 'side', 'gamelength', 'result', 'teamkills', 'teamdeaths', 'assists',
+                   'team kpm', 'dragons', 'opp_dragons', 'dpm', 'damagetakenperminute', 'damagemitigatedperminute',
+                  'damagetochampions', 'totalgold', 'earnedgold', 'earned gpm', 'gspd', 'minionkills', 'monsterkills', 'cspm']
+
+Below is the head of team dataframe:
+
+
+I then remove the match I remove previously in the player dataframe, and found `damagemitigatedperminute` and `minionkills` have missing values, both missed 3776 values. Since these can be calculated from the player dataframe, I found these missing values by summing up the data in player dataframe and filled in the missing valies according to the team and gameid.
+
+
+### Exploratory Data Anslysis
+
+
+
+
 ## Assessment of Missingness
 
 ## Hypothesis Testing
