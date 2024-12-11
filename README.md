@@ -77,12 +77,29 @@ For team df, I kept the following columns: ['gameid', 'datacompleteness', 'leagu
 
 Below is the head of team dataframe:
 
+| game_side                 | gameid                | datacompleteness   | league   | side   |   gamelength |   result |   teamkills |   teamdeaths |   assists |   team kpm |   dragons |   opp_dragons |     dpm |   damagetakenperminute |   damagemitigatedperminute |   damagetochampions |   totalgold |   earnedgold |   earned gpm |        gspd |   minionkills |   monsterkills |    cspm |
+|:--------------------------|:----------------------|:-------------------|:---------|:-------|-------------:|---------:|------------:|-------------:|----------:|-----------:|----------:|--------------:|--------:|-----------------------:|---------------------------:|--------------------:|------------:|-------------:|-------------:|------------:|--------------:|---------------:|--------:|
+| ESPORTSTMNT01_2690210Blue | ESPORTSTMNT01_2690210 | complete           | LCKC     | Blue   |         1713 |        0 |           9 |           19 |        19 |     0.3152 |         1 |             3 | 1981.09 |                3537.2  |                    2364.73 |               56560 |       47070 |        28222 |      988.511 | -0.0283123  |           680 |            160 | 29.4221 |
+| ESPORTSTMNT01_2690210Red  | ESPORTSTMNT01_2690210 | complete           | LCKC     | Red    |         1713 |        1 |          19 |            9 |        62 |     0.6655 |         3 |             1 | 2799.02 |                3009.67 |                    2872.33 |               79912 |       52617 |        33769 |     1182.8   |  0.0283123  |           792 |            184 | 34.1856 |
+| ESPORTSTMNT01_2690219Blue | ESPORTSTMNT01_2690219 | complete           | LCKC     | Blue   |         2114 |        0 |           3 |           16 |         7 |     0.0851 |         1 |             4 | 1690.98 |                2984.02 |                    3109.61 |               59579 |       57629 |        34688 |      984.522 | -0.207137   |           994 |            215 | 34.3141 |
+| ESPORTSTMNT01_2690219Red  | ESPORTSTMNT01_2690219 | complete           | LCKC     | Red    |         2114 |        1 |          16 |            3 |        39 |     0.4541 |         4 |             1 | 2124.55 |                2745.72 |                    2868.42 |               74855 |       71004 |        48063 |     1364.13  |  0.207137   |          1013 |            244 | 35.6764 |
+| 8401-8401_game_1Blue      | 8401-8401_game_1      | partial            | LPL      | Blue   |         1365 |        1 |          13 |            6 |        35 |     0.5714 |         2 |             1 | 1762.02 |                2263.25 |                    2596.82 |               40086 |       45468 |        30167 |     1326.02  | -0.00586225 |           578 |            172 | 32.967  |
+
 
 I then remove the match I remove previously in the player dataframe, and found `damagemitigatedperminute` and `minionkills` have missing values, both missed 3776 values. Since these can be calculated from the player dataframe, I found these missing values by summing up the data in player dataframe and filled in the missing valies according to the team and gameid.
 
 
 ### Univariate Analysis
 
+I performed the Univariate Analysis on total gold, damage to champions, and kills
+
+Here is the distribution of total gold, with the mean of 11383.029248601119:
+<iframe
+  src="assets/total_gold.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
 
 
 
